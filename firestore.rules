@@ -1,0 +1,50 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isDocOwner() {
+      return isAuthenticated() && request.auth.uid == resource.data.userId;
+    }
+
+    function willBeDocOwner() {
+      return isAuthenticated() && request.auth.uid == request.resource.data.userId;
+    }
+
+    // Tasks Collection: Users can read, create, update, and delete only their own tasks
+    match /tasks/{taskId} {
+      allow read: if isAuthenticated() && (resource == null || resource.data.userId == request.auth.uid);
+      allow create: if willBeDocOwner();
+      allow update: if isDocOwner() && willBeDocOwner();
+      allow delete: if isDocOwner();
+    }
+
+    // Projects Collection: Users can manage only their own projects
+    match /projects/{projectId} {
+      allow read: if isAuthenticated() && (resource == null || resource.data.userId == request.auth.uid);
+      allow create: if willBeDocOwner();
+      allow update: if isDocOwner() && willBeDocOwner();
+      allow delete: if isDocOwner();
+    }
+
+    // Focus Sessions Collection: Users can read and write only their own focus logs
+    match /focus_sessions/{sessionId} {
+      allow read: if isAuthenticated() && (resource == null || resource.data.userId == request.auth.uid);
+      allow create: if willBeDocOwner();
+      allow update, delete: if isDocOwner();
+    }
+
+    // User Settings Collection: Users can read and write only their own preferences
+    match /users/{userId}/settings/{settingId} {
+      allow read, write: if isOwner(userId);
+    }
+  }
+}

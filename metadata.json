@@ -1,0 +1,8 @@
+{
+  "name": "TaskFlow – Smart Task Manager",
+  "description": "Modern, AI-powered productivity dashboard for students and professionals to organize tasks, manage deadlines, and build habits.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
