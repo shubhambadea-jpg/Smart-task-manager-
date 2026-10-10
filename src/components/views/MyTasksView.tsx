@@ -132,7 +132,7 @@ export const MyTasksView: React.FC = () => {
               className={`p-1.5 rounded-lg text-xs font-medium transition-all ${
                 viewMode === 'list'
                   ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-xs'
-                  : 'text-slate-500 hover:text-slate-900'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
               }`}
               title="List View"
             >
@@ -143,7 +143,7 @@ export const MyTasksView: React.FC = () => {
               className={`p-1.5 rounded-lg text-xs font-medium transition-all ${
                 viewMode === 'board'
                   ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-xs'
-                  : 'text-slate-500 hover:text-slate-900'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
               }`}
               title="Board View"
             >
@@ -181,7 +181,7 @@ export const MyTasksView: React.FC = () => {
                 className={`px-3 py-1.5 rounded-lg font-medium transition-all ${
                   selectedStatus === tab.id
                     ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 shadow-xs'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
                 }`}
               >
                 {tab.label}

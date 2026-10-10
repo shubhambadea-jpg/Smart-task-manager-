@@ -280,10 +280,10 @@ export const SettingsView: React.FC = () => {
               <button
                 type="button"
                 onClick={() => updateSettings({ theme: 'light' })}
-                className={`flex items-center justify-center gap-2 py-2 rounded-xl border transition-all ${
+                className={`flex items-center justify-center gap-2 py-2 rounded-xl border transition-all cursor-pointer ${
                   settings.theme === 'light'
-                    ? 'border-indigo-600 bg-indigo-50 dark:bg-indigo-950 font-semibold text-indigo-700 dark:text-indigo-300'
-                    : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400'
+                    ? 'border-indigo-600 bg-indigo-50 dark:bg-indigo-950/60 font-semibold text-indigo-700 dark:text-indigo-300 shadow-xs ring-1 ring-indigo-500/30'
+                    : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
                 }`}
               >
                 <Sun className="w-4 h-4 text-amber-500" />
@@ -293,13 +293,13 @@ export const SettingsView: React.FC = () => {
               <button
                 type="button"
                 onClick={() => updateSettings({ theme: 'dark' })}
-                className={`flex items-center justify-center gap-2 py-2 rounded-xl border transition-all ${
+                className={`flex items-center justify-center gap-2 py-2 rounded-xl border transition-all cursor-pointer ${
                   settings.theme === 'dark'
-                    ? 'border-indigo-600 bg-indigo-50 dark:bg-indigo-950 font-semibold text-indigo-700 dark:text-indigo-300'
-                    : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400'
+                    ? 'border-indigo-600 bg-indigo-50 dark:bg-indigo-950/60 font-semibold text-indigo-700 dark:text-indigo-300 shadow-xs ring-1 ring-indigo-500/30'
+                    : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
                 }`}
               >
-                <Moon className="w-4 h-4 text-indigo-400" />
+                <Moon className="w-4 h-4 text-indigo-500 dark:text-indigo-400" />
                 <span>Dark</span>
               </button>
             </div>

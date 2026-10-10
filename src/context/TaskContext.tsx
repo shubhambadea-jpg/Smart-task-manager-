@@ -94,6 +94,7 @@ interface TaskContextType {
 
   // Settings & Theme
   updateSettings: (newSettings: Partial<UserSettings>) => void;
+  toggleTheme: () => void;
   resetDemoData: () => void;
   streakDays: number;
   motivationalQuote: { quote: string; author: string };
@@ -212,18 +213,17 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Apply dark/light theme class to document
   useEffect(() => {
     const root = document.documentElement;
-    if (settings.theme === 'dark') {
+    const isDark = settings.theme === 'dark';
+    if (isDark) {
       root.classList.add('dark');
-    } else if (settings.theme === 'light') {
-      root.classList.remove('dark');
+      if (document.body) document.body.classList.add('dark');
     } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (prefersDark) {
-        root.classList.add('dark');
-      } else {
-        root.classList.remove('dark');
-      }
+      root.classList.remove('dark');
+      if (document.body) document.body.classList.remove('dark');
     }
+    try {
+      localStorage.setItem('taskflow_theme', settings.theme);
+    } catch (e) {}
   }, [settings.theme]);
 
   // Pomodoro interval timer
@@ -691,18 +691,56 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
     [user]
   );
 
+  const toggleTheme = useCallback(() => {
+    setSettings((prev) => {
+      const nextTheme = prev.theme === 'dark' ? 'light' : 'dark';
+      const updated: UserSettings = { ...prev, theme: nextTheme };
+      storage.saveSettings(updated);
+      try {
+        localStorage.setItem('taskflow_theme', nextTheme);
+      } catch (e) {}
+
+      // Immediately apply to DOM
+      const root = document.documentElement;
+      if (nextTheme === 'dark') {
+        root.classList.add('dark');
+        if (document.body) document.body.classList.add('dark');
+      } else {
+        root.classList.remove('dark');
+        if (document.body) document.body.classList.remove('dark');
+      }
+
+      return updated;
+    });
+  }, []);
+
   const updateSettings = useCallback(
     (newSettings: Partial<UserSettings>) => {
-      const updated = { ...settings, ...newSettings };
-      setSettings(updated);
-      storage.saveSettings(updated);
+      setSettings((prev) => {
+        const updated = { ...prev, ...newSettings };
+        storage.saveSettings(updated);
+        if (newSettings.theme) {
+          try {
+            localStorage.setItem('taskflow_theme', newSettings.theme);
+          } catch (e) {}
+          const root = document.documentElement;
+          if (newSettings.theme === 'dark') {
+            root.classList.add('dark');
+            if (document.body) document.body.classList.add('dark');
+          } else {
+            root.classList.remove('dark');
+            if (document.body) document.body.classList.remove('dark');
+          }
+        }
+        return updated;
+      });
       showToast({
         type: 'info',
         title: 'Preferences saved',
         message: 'Settings updated successfully.',
       });
     },
-    [settings, showToast]
+    [showToast]
   );
 
   const resetDemoData = useCallback(() => {
@@ -914,6 +952,7 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
         createCategory,
         logFocusSession,
         updateSettings,
+        toggleTheme,
         resetDemoData,
         streakDays,
         motivationalQuote,

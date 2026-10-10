@@ -19,7 +19,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
   const {
     user,
     settings,
-    updateSettings,
+    toggleTheme,
     openTaskModal,
     setIsAIModalOpen,
     setIsPomodoroModalOpen,
@@ -49,11 +49,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
     const m = Math.floor(totalSeconds / 60);
     const s = totalSeconds % 60;
     return `${m}:${s < 10 ? '0' : ''}${s}`;
-  };
-
-  const toggleTheme = () => {
-    const nextTheme = settings.theme === 'dark' ? 'light' : 'dark';
-    updateSettings({ theme: nextTheme });
   };
 
   return (
@@ -145,10 +140,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar }) => {
         {/* Theme Toggle */}
         <button
           onClick={toggleTheme}
-          className="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 transition-colors"
+          className="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 transition-colors cursor-pointer"
           aria-label="Toggle color theme"
+          title={settings.theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
         >
-          {settings.theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
+          {settings.theme === 'dark' ? (
+            <Sun className="w-4 h-4 text-amber-400" />
+          ) : (
+            <Moon className="w-4 h-4 text-slate-600 dark:text-slate-300" />
+          )}
         </button>
 
         {/* Profile / Demo Indicator */}

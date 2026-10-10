@@ -240,16 +240,26 @@ export class StorageService {
   getSettings(): UserSettings {
     if (typeof window === 'undefined') return DEFAULT_SETTINGS;
     const data = localStorage.getItem(STORAGE_KEYS.SETTINGS);
-    if (!data) return DEFAULT_SETTINGS;
-    try {
-      return { ...DEFAULT_SETTINGS, ...JSON.parse(data) };
-    } catch {
-      return DEFAULT_SETTINGS;
+    const dedicatedTheme = localStorage.getItem('taskflow_theme') as 'light' | 'dark' | null;
+    let loaded: UserSettings = DEFAULT_SETTINGS;
+    if (data) {
+      try {
+        loaded = { ...DEFAULT_SETTINGS, ...JSON.parse(data) };
+      } catch {
+        loaded = DEFAULT_SETTINGS;
+      }
     }
+    if (dedicatedTheme === 'light' || dedicatedTheme === 'dark') {
+      loaded.theme = dedicatedTheme;
+    }
+    return loaded;
   }
 
   saveSettings(settings: UserSettings): void {
     localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
+    if (settings.theme) {
+      localStorage.setItem('taskflow_theme', settings.theme);
+    }
   }
 
   // --- RESET DEMO DATA ---

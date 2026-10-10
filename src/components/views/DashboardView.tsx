@@ -245,11 +245,12 @@ export const DashboardView: React.FC = () => {
                 <YAxis stroke="#94a3b8" fontSize={11} tickLine={false} allowDecimals={false} />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: '#1e293b',
-                    borderColor: '#334155',
+                    backgroundColor: settings.theme === 'dark' ? '#1e293b' : '#ffffff',
+                    borderColor: settings.theme === 'dark' ? '#334155' : '#e2e8f0',
                     borderRadius: '0.75rem',
                     fontSize: '12px',
-                    color: '#f8fafc',
+                    color: settings.theme === 'dark' ? '#f8fafc' : '#0f172a',
+                    boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
                   }}
                 />
                 <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
